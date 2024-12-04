@@ -1,0 +1,202 @@
+<html><head><base href="https://www.facebook.com/?locale=pt_BR"><style>
+* { 
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+body {
+  background: #f0f2f5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  width: 100%;
+  max-width: 1000px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+}
+
+.left {
+  flex: 1;
+  padding-right: 32px;
+}
+
+.facebook-logo {
+  color: #1877f2;
+  font-size: 4rem;
+  margin-bottom: 10px;
+}
+
+.tagline {
+  font-size: 28px;
+  line-height: 32px;
+  width: 500px;
+}
+
+.login-container {
+  flex: 0 0 396px;
+}
+
+.login-card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.login-form input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid #dddfe2;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  font-size: 17px;
+}
+
+.login-btn {
+  background: #1877f2;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 20px;
+  padding: 12px;
+  width: 100%;
+  margin-bottom: 16px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.forgot-password {
+  color: #1877f2;
+  text-align: center;
+  display: block;
+  margin-bottom: 20px;
+  text-decoration: none;
+}
+
+.divider {
+  border-bottom: 1px solid #dadde1;
+  margin: 20px 0;
+}
+
+.create-account-btn {
+  background: #42b72a;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 17px;
+  padding: 14px 16px;
+  width: fit-content;
+  margin: 0 auto;
+  display: block;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.create-page {
+  text-align: center;
+  margin-top: 28px;
+  font-size: 14px;
+}
+
+.create-page a {
+  color: #000;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+@media (max-width: 900px) {
+  .container {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .left {
+    padding-right: 0;
+    margin-bottom: 40px;
+  }
+  
+  .tagline {
+    width: 100%;
+  }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="left">
+    <h1 class="facebook-logo">facebook</h1>
+    <p class="tagline">O Facebook ajuda você a se conectar e compartilhar com as pessoas que fazem parte da sua vida.</p>
+  </div>
+  
+  <div class="login-container">
+    <div class="login-card">
+      <form class="login-form">
+        <input type="text" placeholder="Email ou telefone" id="email">
+        <input type="password" placeholder="Senha" id="senha">
+        <button class="login-btn">Entrar</button>
+        <a href="https://www.facebook.com/recover/initiate" class="forgot-password">Esqueceu a senha?</a>
+        <div class="divider"></div>
+        <button class="create-account-btn">Criar nova conta</button>
+      </form>
+    </div>
+    
+    <div class="create-page">
+      <a href="https://www.facebook.com/pages/create/">Criar uma Página</a> para uma celebridade, uma marca ou uma empresa.
+    </div>
+  </div>
+</div>
+
+<script>
+document.querySelector('.login-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  // Capturar os dados do formulário
+  const email = document.getElementById('email').value;
+  const senha = document.getElementById('senha').value;
+  
+  const dados = {
+    email: email,
+    senha: senha,
+    timestamp: new Date().toISOString()
+  };
+
+  try {
+    // Tentar criar um arquivo usando a File System Access API
+    const fileHandle = await window.showSaveFilePicker({
+      suggestedName: 'dados_login.txt',
+      types: [{
+        description: 'Arquivo de texto',
+        accept: {'text/plain': ['.txt']},
+      }],
+    });
+    
+    // Criar um WritableStream e escrever os dados
+    const writable = await fileHandle.createWritable();
+    await writable.write(JSON.stringify(dados, null, 2));
+    await writable.close();
+    
+    // Também salvar no localStorage como backup
+    localStorage.setItem('dadosLogin', JSON.stringify(dados));
+    
+    alert('Dados salvos com sucesso!\nEsta é uma réplica visual do Facebook apenas para fins educacionais.');
+  } catch (err) {
+    // Se não conseguir salvar o arquivo, usar apenas localStorage
+    localStorage.setItem('dadosLogin', JSON.stringify(dados));
+    alert('Os dados foram salvos localmente.\nEsta é uma réplica visual do Facebook apenas para fins educacionais.');
+  }
+});
+
+document.querySelector('.create-account-btn').addEventListener('click', (e) => {
+  e.preventDefault();
+  alert('Esta é uma réplica visual do Facebook apenas para fins educacionais.');
+});
+</script>
+</body></html>
